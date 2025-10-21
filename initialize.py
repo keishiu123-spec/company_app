@@ -14,6 +14,7 @@ import unicodedata
 from dotenv import load_dotenv
 import streamlit as st
 from langchain_community.document_loaders import WebBaseLoader
+from docx import Document
 from langchain_text_splitters import CharacterTextSplitter
 from langchain_openai import OpenAIEmbeddings
 from langchain_community.vectorstores import Chroma

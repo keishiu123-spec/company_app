@@ -19,6 +19,14 @@ from langchain_openai import OpenAIEmbeddings
 from langchain_community.vectorstores import Chroma
 import constants as ct
 
+# ── ここから追記（Secrets → .env の順で読む）──
+if "OPENAI_API_KEY" in st.secrets:           # Cloud用：Secretsを最優先
+    os.environ["OPENAI_API_KEY"] = st.secrets["OPENAI_API_KEY"]
+
+load_dotenv()                                 # ローカル用：.env も読む（既存ENVは上書きしない）
+
+os.environ.setdefault("USER_AGENT", "company_app/1.0 (+Streamlit)")  # 任意：警告抑止
+# ── ここまで追記 ──
 
 ############################################################
 # 設定関連

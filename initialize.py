@@ -19,14 +19,6 @@ from langchain_openai import OpenAIEmbeddings
 from langchain_community.vectorstores import Chroma
 import constants as ct
 
-# ── ここから追記（Secrets → .env の順で読む）──
-if "OPENAI_API_KEY" in st.secrets:           # Cloud用：Secretsを最優先
-    os.environ["OPENAI_API_KEY"] = st.secrets["OPENAI_API_KEY"]
-
-load_dotenv()                                 # ローカル用：.env も読む（既存ENVは上書きしない）
-
-os.environ.setdefault("USER_AGENT", "company_app/1.0 (+Streamlit)")  # 任意：警告抑止
-# ── ここまで追記 ──
 
 ############################################################
 # 設定関連
@@ -34,12 +26,34 @@ os.environ.setdefault("USER_AGENT", "company_app/1.0 (+Streamlit)")  # 任意：
 # 「.env」ファイルで定義した環境変数の読み込み
 load_dotenv()
 
+# 10.23追記: Streamlit Secrets が無い環境でも落ちない安全ラッパー
+def _get_secret_safe(key: str):
+    """secrets.toml が無い環境でも落ちない安全ラッパー"""
+    try:
+        return st.secrets[key]
+    except Exception:
+        return None
+
+def ensure_openai_key():
+    """
+    OPENAI_API_KEY を .env → Streamlit Secrets の順で探し、
+    見つけたら環境変数に設定（LangChain / OpenAI SDK が参照）
+    """
+    import os
+    key = os.getenv("OPENAI_API_KEY") or _get_secret_safe("OPENAI_API_KEY")
+    if not key:
+        raise RuntimeError(
+            "OPENAI_API_KEY が見つかりません。.env か Streamlit Secrets に設定してください。"
+        )
+    os.environ["OPENAI_API_KEY"] = key
 
 ############################################################
 # 関数定義
 ############################################################
 
 def initialize():
+    # 10.23追加
+    ensure_openai_key()
     """
     画面読み込み時に実行する初期化処理
     """

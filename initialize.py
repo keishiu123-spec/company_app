@@ -19,19 +19,27 @@ from langchain_openai import OpenAIEmbeddings
 from langchain_community.vectorstores import Chroma
 import constants as ct
 
-
 ############################################################
 # 設定関連
 ############################################################
 # 「.env」ファイルで定義した環境変数の読み込み
 load_dotenv()
 
-# 10.23追記: Streamlit Secrets が無い環境でも落ちない安全ラッパー
+# trafilatura(WebBaseLoader内部)向けのUSER_AGENTを標準で設定
+os.environ.setdefault("USER_AGENT", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) Streamlit/1.x")
+
+# Streamlit Secrets が無い/構造が違っても落ちない安全ラッパー
 def _get_secret_safe(key: str):
-    """secrets.toml が無い環境でも落ちない安全ラッパー"""
+    """secrets.toml が無い・構造が異なる環境でも落ちない安全ラッパー"""
     try:
         return st.secrets[key]
     except Exception:
+        # 例えば secrets = {"openai": {"api_key": "..."}} の場合にも対応
+        try:
+            if key == "OPENAI_API_KEY":
+                return st.secrets["openai"]["api_key"]
+        except Exception:
+            return None
         return None
 
 def ensure_openai_key():
@@ -39,7 +47,6 @@ def ensure_openai_key():
     OPENAI_API_KEY を .env → Streamlit Secrets の順で探し、
     見つけたら環境変数に設定（LangChain / OpenAI SDK が参照）
     """
-    import os
     key = os.getenv("OPENAI_API_KEY") or _get_secret_safe("OPENAI_API_KEY")
     if not key:
         raise RuntimeError(
@@ -52,8 +59,6 @@ def ensure_openai_key():
 ############################################################
 
 def initialize():
-    # 10.23追加
-    ensure_openai_key()
     """
     画面読み込み時に実行する初期化処理
     """
@@ -63,6 +68,10 @@ def initialize():
     initialize_session_id()
     # ログ出力の設定
     initialize_logger()
+
+    # APIキー確認（ロガー準備後に行い、失敗してもログに残せるように）
+    ensure_openai_key()
+
     # RAGのRetrieverを作成
     initialize_retriever()
 
@@ -89,12 +98,6 @@ def initialize_logger():
         encoding="utf8"
     )
     # 出力するログメッセージのフォーマット定義
-    # - 「levelname」: ログの重要度（INFO, WARNING, ERRORなど）
-    # - 「asctime」: ログのタイムスタンプ（いつ記録されたか）
-    # - 「lineno」: ログが出力されたファイルの行番号
-    # - 「funcName」: ログが出力された関数名
-    # - 「session_id」: セッションID（誰のアプリ操作か分かるように）
-    # - 「message」: ログメッセージ
     formatter = logging.Formatter(
         f"[%(levelname)s] %(asctime)s line %(lineno)s, in %(funcName)s, session_id={st.session_state.session_id}: %(message)s"
     )
@@ -123,7 +126,6 @@ def initialize_retriever():
     """
     画面読み込み時にRAGのRetriever（ベクターストアから検索するオブジェクト）を作成
     """
-    # ロガーを読み込むことで、後続の処理中に発生したエラーなどがログファイルに記録される
     logger = logging.getLogger(ct.LOGGER_NAME)
 
     # すでにRetrieverが作成済みの場合、後続の処理を中断
@@ -136,27 +138,32 @@ def initialize_retriever():
     # OSがWindowsの場合、Unicode正規化と、cp932（Windows用の文字コード）で表現できない文字を除去
     for doc in docs_all:
         doc.page_content = adjust_string(doc.page_content)
-        for key in doc.metadata:
+        for key in list(doc.metadata.keys()):
             doc.metadata[key] = adjust_string(doc.metadata[key])
     
-    # 埋め込みモデルの用意
-    embeddings = OpenAIEmbeddings()
-    
-    # チャンク分割用のオブジェクトを作成
-    text_splitter = CharacterTextSplitter(
-        chunk_size=ct.CHUNK_SIZE,
-        chunk_overlap=ct.CHUNK_OVERLAP,
-        separator="\n"
-    )
+    try:
+        # 埋め込みモデルの用意
+        embeddings = OpenAIEmbeddings()
+        
+        # チャンク分割用のオブジェクトを作成
+        text_splitter = CharacterTextSplitter(
+            chunk_size=ct.CHUNK_SIZE,
+            chunk_overlap=ct.CHUNK_OVERLAP,
+            separator="\n"
+        )
 
-    # チャンク分割を実施
-    splitted_docs = text_splitter.split_documents(docs_all)
+        # チャンク分割を実施
+        splitted_docs = text_splitter.split_documents(docs_all)
 
-    # ベクターストアの作成
-    db = Chroma.from_documents(splitted_docs, embedding=embeddings)
+        # ベクターストアの作成
+        db = Chroma.from_documents(splitted_docs, embedding=embeddings)
 
-    # ベクターストアを検索するRetrieverの作成
-    st.session_state.retriever = db.as_retriever(search_kwargs={"k": ct.RETRIEVER_K})
+        # ベクターストアを検索するRetrieverの作成
+        st.session_state.retriever = db.as_retriever(search_kwargs={"k": ct.RETRIEVER_K})
+    except Exception as e:
+        logger.error(f"ベクターストア初期化失敗: {e}")
+        # ここでは従来挙動どおり停止させる（上位でハンドリング）
+        raise
 
 
 def initialize_session_state():
@@ -177,6 +184,8 @@ def load_data_sources():
     Returns:
         読み込んだ通常データソース
     """
+    logger = logging.getLogger(ct.LOGGER_NAME)
+
     # データソースを格納する用のリスト
     docs_all = []
     # ファイル読み込みの実行（渡した各リストにデータが格納される）
@@ -184,13 +193,16 @@ def load_data_sources():
 
     web_docs_all = []
     # ファイルとは別に、指定のWebページ内のデータも読み込み
-    # 読み込み対象のWebページ一覧に対して処理
     for web_url in ct.WEB_URL_LOAD_TARGETS:
-        # 指定のWebページを読み込み
-        loader = WebBaseLoader(web_url)
-        web_docs = loader.load()
-        # for文の外のリストに読み込んだデータソースを追加
-        web_docs_all.extend(web_docs)
+        try:
+            loader = WebBaseLoader(web_url)
+            web_docs = loader.load()
+            web_docs_all.extend(web_docs)
+        except Exception as e:
+            logger.warning(f"Web読み込み失敗: {web_url} : {e}")
+            # Webはスキップして続行
+            continue
+
     # 通常読み込みのデータソースにWebページのデータを追加
     docs_all.extend(web_docs_all)
 
@@ -228,17 +240,21 @@ def file_load(path, docs_all):
         path: ファイルパス
         docs_all: データソースを格納する用のリスト
     """
+    logger = logging.getLogger(ct.LOGGER_NAME)
+
     # ファイルの拡張子を取得
     file_extension = os.path.splitext(path)[1]
-    # ファイル名（拡張子を含む）を取得
-    file_name = os.path.basename(path)
 
     # 想定していたファイル形式の場合のみ読み込む
     if file_extension in ct.SUPPORTED_EXTENSIONS:
-        # ファイルの拡張子に合ったdata loaderを使ってデータ読み込み
-        loader = ct.SUPPORTED_EXTENSIONS[file_extension](path)
-        docs = loader.load()
-        docs_all.extend(docs)
+        try:
+            # ファイルの拡張子に合った data loader を使ってデータ読み込み
+            loader = ct.SUPPORTED_EXTENSIONS[file_extension](path)
+            docs = loader.load()
+            docs_all.extend(docs)
+        except Exception as e:
+            # 壊れ/非対応ファイルはスキップして続行（原因はログに残す）
+            logger.warning(f"ファイル読み込み失敗: {path} ({e})")
 
 
 def adjust_string(s):

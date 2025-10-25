@@ -1,19 +1,40 @@
-[INFO] 2025-10-23 06:23:24,021 line 54, in <module>, session_id=64290b324bef4cc09cd124503b3fb215: アプリが起動されました。
-[INFO] 2025-10-23 23:23:21,099 line 54, in <module>, session_id=d26effbfd7e84cfab4682303b069d047: アプリが起動されました。
-[INFO] 2025-10-23 23:26:04,508 line 99, in <module>, session_id=d26effbfd7e84cfab4682303b069d047: {'message': '株式会社', 'application_mode': '社内文書検索'}
-[INFO] 2025-10-23 23:26:07,359 line 143, in <module>, session_id=d26effbfd7e84cfab4682303b069d047: {'message': {'mode': '社内文書検索', 'answer': '\n    入力内容と関連する社内文書が見つかりませんでした。\n\n    入力内容を変更してください。\n', 'no_file_path_flg': True}, 'application_mode': '社内文書検索'}
-[INFO] 2025-10-23 23:26:09,490 line 99, in <module>, session_id=d26effbfd7e84cfab4682303b069d047: {'message': '株式会社', 'application_mode': '社内文書検索'}
-[ERROR] 2025-10-23 23:26:15,659 line 117, in <module>, session_id=d26effbfd7e84cfab4682303b069d047: 回答生成に失敗しました。
+[INFO] 2025-10-25 11:08:58,681 line 54, in <module>, session_id=bf2fe34ac2244ed09825bc84ea98d19d: アプリが起動されました。
+[INFO] 2025-10-25 11:10:04,850 line 99, in <module>, session_id=bf2fe34ac2244ed09825bc84ea98d19d: {'message': '株式会社', 'application_mode': '社内文書検索'}
+[INFO] 2025-10-25 11:10:08,357 line 143, in <module>, session_id=bf2fe34ac2244ed09825bc84ea98d19d: {'message': {'mode': '社内文書検索', 'answer': '\n    入力内容と関連する社内文書が見つかりませんでした。\n\n    入力内容を変更してください。\n', 'no_file_path_flg': True}, 'application_mode': '社内文書検索'}
+[INFO] 2025-10-25 11:10:12,500 line 99, in <module>, session_id=bf2fe34ac2244ed09825bc84ea98d19d: {'message': '株式会社', 'application_mode': '社内文書検索'}
+[INFO] 2025-10-25 11:10:17,601 line 99, in <module>, session_id=bf2fe34ac2244ed09825bc84ea98d19d: {'message': '株式会社', 'application_mode': '社内文書検索'}
+[ERROR] 2025-10-25 11:10:18,863 line 117, in <module>, session_id=bf2fe34ac2244ed09825bc84ea98d19d: 回答生成に失敗しました。
 no such table: collections
-[INFO] 2025-10-23 23:26:40,866 line 99, in <module>, session_id=d26effbfd7e84cfab4682303b069d047: {'message': '株式会社ecoTreの株主優待の内容を教えて', 'application_mode': '社内文書検索'}
-[ERROR] 2025-10-23 23:26:45,802 line 117, in <module>, session_id=d26effbfd7e84cfab4682303b069d047: 回答生成に失敗しました。
+[ERROR] 2025-10-25 11:10:22,279 line 117, in <module>, session_id=bf2fe34ac2244ed09825bc84ea98d19d: 回答生成に失敗しました。
 no such table: collections
-[INFO] 2025-10-23 23:27:04,749 line 99, in <module>, session_id=d26effbfd7e84cfab4682303b069d047: {'message': '株式会社ecoTreの株主優待の内容を教えて', 'application_mode': '社内文書検索'}
-[ERROR] 2025-10-23 23:27:09,078 line 117, in <module>, session_id=d26effbfd7e84cfab4682303b069d047: 回答生成に失敗しました。
+[INFO] 2025-10-25 11:10:28,702 line 99, in <module>, session_id=bf2fe34ac2244ed09825bc84ea98d19d: {'message': 'かぶしきがいしゃEcoTreno', 'application_mode': '社内文書検索'}
+[ERROR] 2025-10-25 11:10:30,758 line 117, in <module>, session_id=bf2fe34ac2244ed09825bc84ea98d19d: 回答生成に失敗しました。
 no such table: collections
-[ERROR] 2025-10-23 23:27:43,391 line 164, in initialize_retriever, session_id=d26effbfd7e84cfab4682303b069d047: ベクターストア初期化失敗: Could not connect to tenant default_tenant. Are you sure it exists?
-[ERROR] 2025-10-23 23:27:43,392 line 45, in <module>, session_id=d26effbfd7e84cfab4682303b069d047: 初期化処理に失敗しました。
+[INFO] 2025-10-25 11:10:52,553 line 99, in <module>, session_id=bf2fe34ac2244ed09825bc84ea98d19d: {'message': '株主優待の内容を教えて', 'application_mode': '社内文書検索'}
+[ERROR] 2025-10-25 11:10:58,494 line 117, in <module>, session_id=bf2fe34ac2244ed09825bc84ea98d19d: 回答生成に失敗しました。
+no such table: collections
+[ERROR] 2025-10-25 11:11:11,523 line 164, in initialize_retriever, session_id=bf2fe34ac2244ed09825bc84ea98d19d: ベクターストア初期化失敗: Could not connect to tenant default_tenant. Are you sure it exists?
+[ERROR] 2025-10-25 11:11:11,523 line 45, in <module>, session_id=bf2fe34ac2244ed09825bc84ea98d19d: 初期化処理に失敗しました。
 Could not connect to tenant default_tenant. Are you sure it exists?
-[ERROR] 2025-10-23 23:27:48,501 line 164, in initialize_retriever, session_id=d26effbfd7e84cfab4682303b069d047: ベクターストア初期化失敗: Could not connect to tenant default_tenant. Are you sure it exists?
-[ERROR] 2025-10-23 23:27:48,502 line 45, in <module>, session_id=d26effbfd7e84cfab4682303b069d047: 初期化処理に失敗しました。
+[ERROR] 2025-10-25 11:11:16,477 line 164, in initialize_retriever, session_id=bf2fe34ac2244ed09825bc84ea98d19d: ベクターストア初期化失敗: Could not connect to tenant default_tenant. Are you sure it exists?
+[ERROR] 2025-10-25 11:11:16,477 line 45, in <module>, session_id=bf2fe34ac2244ed09825bc84ea98d19d: 初期化処理に失敗しました。
 Could not connect to tenant default_tenant. Are you sure it exists?
+[INFO] 2025-10-25 11:11:47,763 line 54, in <module>, session_id=31d1d3071dc74578831e6ead5d08ad78: アプリが起動されました。
+[INFO] 2025-10-25 11:11:56,258 line 99, in <module>, session_id=31d1d3071dc74578831e6ead5d08ad78: {'message': '株主優待の内容を教えて', 'application_mode': '社内文書検索'}
+[INFO] 2025-10-25 11:11:57,922 line 143, in <module>, session_id=31d1d3071dc74578831e6ead5d08ad78: {'message': {'mode': '社内文書検索', 'main_message': '入力内容に関する情報は、以下のファイルに含まれている可能性があります。', 'main_file_path': './data/会社について/株主優待について.pdf', 'main_page_number': 1, 'sub_message': 'その他、ファイルありかの候補を提示します。', 'sub_choices': [{'source': './data/サービスについて/デザインに関すること.pdf', 'page_number': 2}]}, 'application_mode': '社内文書検索'}
+[INFO] 2025-10-25 11:12:44,881 line 99, in <module>, session_id=31d1d3071dc74578831e6ead5d08ad78: {'message': '株主優待の内容を教えて', 'application_mode': '社内問い合わせ'}
+[ERROR] 2025-10-25 11:12:48,680 line 117, in <module>, session_id=31d1d3071dc74578831e6ead5d08ad78: 回答生成に失敗しました。
+no such table: collections
+[INFO] 2025-10-25 11:13:07,842 line 99, in <module>, session_id=31d1d3071dc74578831e6ead5d08ad78: {'message': '人事部に所属している従業員情報を一覧化して', 'application_mode': '社内問い合わせ'}
+[ERROR] 2025-10-25 11:13:12,832 line 117, in <module>, session_id=31d1d3071dc74578831e6ead5d08ad78: 回答生成に失敗しました。
+no such table: collections
+[INFO] 2025-10-25 11:13:22,376 line 99, in <module>, session_id=31d1d3071dc74578831e6ead5d08ad78: {'message': '社員の育成方針に関するMTGの議事録', 'application_mode': '社内文書検索'}
+[ERROR] 2025-10-25 11:13:28,532 line 117, in <module>, session_id=31d1d3071dc74578831e6ead5d08ad78: 回答生成に失敗しました。
+no such table: collections
+[INFO] 2025-10-25 11:14:16,804 line 54, in <module>, session_id=9782092f13574be3884fef940a70233b: アプリが起動されました。
+[INFO] 2025-10-25 11:14:27,450 line 99, in <module>, session_id=9782092f13574be3884fef940a70233b: {'message': '人事部に所属している従業員情報を一覧化して', 'application_mode': '社内問い合わせ'}
+[ERROR] 2025-10-25 11:14:28,082 line 117, in <module>, session_id=9782092f13574be3884fef940a70233b: 回答生成に失敗しました。
+no such table: collections
+[INFO] 2025-10-25 11:31:04,771 line 99, in <module>, session_id=9782092f13574be3884fef940a70233b: {'message': '社員の育成方針に関するMTGの議事録', 'application_mode': '社内文書検索'}
+[ERROR] 2025-10-25 11:31:05,744 line 117, in <module>, session_id=9782092f13574be3884fef940a70233b: 回答生成に失敗しました。
+no such table: collections

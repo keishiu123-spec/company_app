@@ -284,30 +284,18 @@ def display_contact_llm_response(llm_response):
 
         # LLMが回答生成の参照元として使ったドキュメントの一覧が「context」内のリストの中に入っているため、ループ処理
         for document in llm_response["context"]:
-            # ファイルパスを取得
             file_path = document.metadata["source"]
-            # ファイルパスの重複は除去
             if file_path in file_path_list:
                 continue
 
-            # ページ番号が取得できた場合のみ、ページ番号を表示（ドキュメントによっては取得できない場合がある）
-            if "page" in document.metadata:
-                # ページ番号を取得
-                page_number = document.metadata["page"]
-                # 「ファイルパス」と「ページ番号」
-                file_info = f"{file_path}"
-            else:
-                # 「ファイルパス」のみ
-                file_info = f"{file_path}"
+            page_number = document.metadata.get("page")
+            # PDFならページ番号を付けて整形（utils.format_file_info は PDF かつ page ありで追記してくれる実装）
+            file_info = utils.format_file_info(file_path, page_number)
 
-            # 参照元のありかに応じて、適したアイコンを取得
             icon = utils.get_source_icon(file_path)
-            # ファイル情報を表示
             st.info(file_info, icon=icon)
 
-            # 重複チェック用に、ファイルパスをリストに順次追加
             file_path_list.append(file_path)
-            # ファイル情報をリストに順次追加
             file_info_list.append(file_info)
 
     # 表示用の会話ログに格納するためのデータを用意

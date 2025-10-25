@@ -1,0 +1,19 @@
+[INFO] 2025-10-23 06:23:24,021 line 54, in <module>, session_id=64290b324bef4cc09cd124503b3fb215: アプリが起動されました。
+[INFO] 2025-10-23 23:23:21,099 line 54, in <module>, session_id=d26effbfd7e84cfab4682303b069d047: アプリが起動されました。
+[INFO] 2025-10-23 23:26:04,508 line 99, in <module>, session_id=d26effbfd7e84cfab4682303b069d047: {'message': '株式会社', 'application_mode': '社内文書検索'}
+[INFO] 2025-10-23 23:26:07,359 line 143, in <module>, session_id=d26effbfd7e84cfab4682303b069d047: {'message': {'mode': '社内文書検索', 'answer': '\n    入力内容と関連する社内文書が見つかりませんでした。\n\n    入力内容を変更してください。\n', 'no_file_path_flg': True}, 'application_mode': '社内文書検索'}
+[INFO] 2025-10-23 23:26:09,490 line 99, in <module>, session_id=d26effbfd7e84cfab4682303b069d047: {'message': '株式会社', 'application_mode': '社内文書検索'}
+[ERROR] 2025-10-23 23:26:15,659 line 117, in <module>, session_id=d26effbfd7e84cfab4682303b069d047: 回答生成に失敗しました。
+no such table: collections
+[INFO] 2025-10-23 23:26:40,866 line 99, in <module>, session_id=d26effbfd7e84cfab4682303b069d047: {'message': '株式会社ecoTreの株主優待の内容を教えて', 'application_mode': '社内文書検索'}
+[ERROR] 2025-10-23 23:26:45,802 line 117, in <module>, session_id=d26effbfd7e84cfab4682303b069d047: 回答生成に失敗しました。
+no such table: collections
+[INFO] 2025-10-23 23:27:04,749 line 99, in <module>, session_id=d26effbfd7e84cfab4682303b069d047: {'message': '株式会社ecoTreの株主優待の内容を教えて', 'application_mode': '社内文書検索'}
+[ERROR] 2025-10-23 23:27:09,078 line 117, in <module>, session_id=d26effbfd7e84cfab4682303b069d047: 回答生成に失敗しました。
+no such table: collections
+[ERROR] 2025-10-23 23:27:43,391 line 164, in initialize_retriever, session_id=d26effbfd7e84cfab4682303b069d047: ベクターストア初期化失敗: Could not connect to tenant default_tenant. Are you sure it exists?
+[ERROR] 2025-10-23 23:27:43,392 line 45, in <module>, session_id=d26effbfd7e84cfab4682303b069d047: 初期化処理に失敗しました。
+Could not connect to tenant default_tenant. Are you sure it exists?
+[ERROR] 2025-10-23 23:27:48,501 line 164, in initialize_retriever, session_id=d26effbfd7e84cfab4682303b069d047: ベクターストア初期化失敗: Could not connect to tenant default_tenant. Are you sure it exists?
+[ERROR] 2025-10-23 23:27:48,502 line 45, in <module>, session_id=d26effbfd7e84cfab4682303b069d047: 初期化処理に失敗しました。
+Could not connect to tenant default_tenant. Are you sure it exists?
